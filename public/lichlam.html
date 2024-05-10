@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thời gian biểu làm việc</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        .morning {
+            background-color: #f44336; /* Red */
+        }
+        .afternoon {
+            background-color: #2196F3; /* Blue */
+        }
+        .evening {
+            background-color: #4CAF50; /* Green */
+        }
+        .night {
+            background-color: #9C27B0; /* Purple */
+        }
+        @media (max-width: 640px) {
+            .responsive-table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+            }
+        }
+        .shift-cell {
+            min-width: 120px; /* Ensures cells have padding */
+        }
+        .shift {
+            display: inline-block;
+            padding: 5px;
+            margin: 2px;
+            color: white;
+            border-radius: 4px;
+            width: calc(100% - 4px); /* Full width minus margin */
+            text-align: center;
+        }
+        .notes-cell {
+            max-width: 150px; /* Limit width of notes cell */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .notes-cell:hover {
+            overflow: visible;
+            white-space: normal;
+            background-color: #f3f4f6; /* Light grey background on hover */
+        }
+        th, td {
+            border: 1px solid #ddd; /* Add border to all table cells */
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #f9fafb; /* Zebra striping for rows */
+        }
+        table {
+            width: 100%;
+            table-layout: auto; /* Allows table to expand based on content */
+        }
+        .scheduleTable{
+            width: 100%;
+            table-layout: auto; /* Allows table to expand based on content */
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="lichlam.html" class="text-gray-800 text-xl font-bold mr-4">Genesis Employee</a>
+                    <ul class="flex items-center space-x-4">
+                        <li>
+                            <a href="index.html" class="text-gray-600 hover:text-gray-800 transition-colors">Đăng kí lịch làm</a>
+                        </li>
+                        <li>
+                            <a href="lichlam.html" class="text-gray-600 hover:text-gray-800 transition-colors">Lịch Làm</a>
+                        </li>
+                        <li>
+                            <a href="trade.html" class="text-gray-600 hover:text-gray-800 transition-colors">Trade Lịch Làm</a>
+                        </li>
+                        <li>
+                            <a href="bangiao.html" class="text-gray-600 hover:text-gray-800 transition-colors">Bàn Giao</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <h1 class="text-center text-3xl font-bold my-6">Work Schedule Management</h1>
+
+        <div id="adminLoginModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                <div class="mt-3 text-center">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                        <i class="fas fa-user-lock text-green-600"></i>
+                    </div>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Admin Login</h3>
+                    <span class="close absolute top-0 right-0 cursor-pointer p-4">
+                        <i class="fas fa-times text-gray-600"></i>
+                    </span>
+                    <form id="adminLoginForm" class="mt-2">
+                        <input type="text" id="adminUsername" placeholder="Username" class="mt-2 p-3 w-full border rounded-md">
+                        <input type="password" id="adminPassword" placeholder="Password" class="mt-2 p-3 w-full border rounded-md">
+                        <button type="submit" class="mt-4 mb-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="adminInterface" class="hidden">
+            <h2 class="text-xl font-semibold text-gray-800">Manage Shifts</h2>
+            <button id="editModeButton" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Edit Mode</button>
+            <button id="saveButton" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 hidden">Save Changes</button>
+        </div>
+
+        <div class="flex justify-between items-center mt-6">
+            <div>
+                <label for="weekSelect" class="block text-sm font-medium text-gray-700">Select Week:</label>
+                <select id="weekSelect" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"></select>
+            </div>
+            <button id="adminLogin" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Admin Login</button>
+        </div>
+
+        <div class="responsive-table">
+            <table id="scheduleTable" class="min-w-full leading-normal mt-6">
+                <thead>
+                    <tr class="bg-gray-800 text-white">
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-center">Employee Name</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-center">Monday</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-center">Tuesday</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-center">Wednesday</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-center">Thursday</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-center">Friday</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-center">Saturday</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-center">Sunday</th>
+                        <th class="px-5 py-3 border-b-2 border-gray-200 text-center">Notes</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
