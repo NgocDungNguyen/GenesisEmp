@@ -45,5 +45,5 @@ app.get('/', (req, res) => {
 app.use('/api', apiRoutes);
 
 app.listen(port, () => {
-  console.log(`Server đang chạy trên cổng ${port}`);
+  console.log(`Máy chủ đang chạy trên cổng ${port}`);
 });

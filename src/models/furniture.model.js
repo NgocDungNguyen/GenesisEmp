@@ -8,9 +8,9 @@ const FurnitureSchema = new Schema({
     day: { type: String, required: true },
     status: { type: String, default: 'Tốt' },
     note: { type: String, default: '' },
-    completed: { type: Boolean, default: false }
+    completed: { type: Boolean, default: false },
+    priority: { type: Boolean, default: false },
+    order: { type: Number, default: 0 }  // Add order field
 });
-
-FurnitureSchema.index({ room: 1, furnitureName: 1, week: 1, day: 1 }, { unique: true });
 
 module.exports = mongoose.model('Furniture', FurnitureSchema);
