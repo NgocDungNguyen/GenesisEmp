@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài Liệu Training</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .document-container {
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+        }
+        .document-list {
+            list-style: none;
+            padding: 0;
+        }
+        .document-list li {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .document-list li button {
+            margin-left: 10px;
+        }
+        .document-list li a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        #documentList {
+            list-style-type: none;
+            padding: 0;
+        }
+        #documentList li {
+            margin: 5px 0;
+        }
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            display: none;
+        }
+        .upload-container {
+            margin: 20px 0;
+        }
+        .upload-container input, .upload-container button {
+            margin: 5px 0;
+        }
+        .category-select {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="lichlam.html" class="text-gray-800 text-xl font-bold mr-4">Genesis Employee</a>
+                    <ul class="flex items-center space-x-4">
+                        <li>
+                            <a href="index.html" class="text-gray-600 hover:text-gray-800 transition-colors">Đăng kí lịch làm</a>
+                        </li>
+                        <li>
+                            <a href="lichlam.html" class="text-gray-600 hover:text-gray-800 transition-colors">Lịch Làm</a>
+                        </li>
+                        <li>
+                            <a href="trade.html" class="text-gray-600 hover:text-gray-800 transition-colors">Trade Lịch Làm</a>
+                        </li>
+                        <li>
+                            <a href="bangiao.html" class="text-gray-600 hover:text-gray-800 transition-colors">Bàn Giao</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <h1 class="text-center text-3xl font-bold my-6">Tài Liệu</h1>
+
+    <div class="controls">
+        <label for="categorySelect">Chọn danh mục:</label>
+        <select id="categorySelect" class="category-select">
+            <option value="Dẫn Phòng">Dẫn Phòng</option>
+            <option value="Hide&Seek">Hide&Seek</option>
+            <option value="The Morgue (GUM)">The Morgue (GUM)</option>
+            <option value="Gone">Gone</option>
+            <option value="The Illusion (AM)">The Illusion (AM)</option>
+            <option value="Ngải 1">Ngải 1</option>
+            <option value="Ngải 2">Ngải 2</option>
+            <option value="Chiếc Hài Đỏ">Chiếc Hài Đỏ</option>
+            <option value="Rồng Rắn Lên Mây">Rồng Rắn Lên Mây</option>
+        </select>
+    </div>
+    <ul id="documentList"></ul>
+    <iframe id="documentViewer"></iframe>
+
+    <div class="upload-container">
+        <button id="uploadButton">Tải lên tài liệu</button>
+    </div>
+
+    <div id="uploadModal" style="display:none;">
+        <div>
+            <span class="close">&times;</span>
+            <h2>Tải lên tài liệu</h2>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" id="documentFile" required>
+                <button type="submit">Tải lên</button>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="tailieu.js"></script>
+</body>
+</html>

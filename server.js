@@ -5,45 +5,43 @@ const mongoose = require('mongoose');
 const path = require('path');
 const apiRoutes = require('./src/routes/api.routes');
 const bangiaoRoutes = require('./src/routes/bangiao.routes');
+const documentRoutes = require('./src/routes/document.routes');
 
-console.log('api.routes.js và bangiao.routes.js đã được nhập thành công!');
+console.log('api.routes.js, bangiao.routes.js, and document.routes.js files imported successfully!');
 
 const app = express();
 app.use(cors());
 
 const port = process.env.PORT || 3000;
 
-// Kết nối với MongoDB
+// Connect to MongoDB
 mongoose.connect('mongodb+srv://s3978535:RedPoint2905@cluster1.vqvlwni.mongodb.net/', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log('Đã kết nối với MongoDB'))
-.catch(err => console.error('Kết nối MongoDB thất bại', err));
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('Failed to connect to MongoDB', err));
 
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.get('/script.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.sendFile(path.join(__dirname, './public/script.js'));
 });
 
-app.use('/api', bangiaoRoutes);
-
-app.get('/bangiao.js', (req, res) => {
+app.get('/tailieu.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
-  res.sendFile(path.join(__dirname, './public/bangiao.js'));
+  res.sendFile(path.join(__dirname, './public/tailieu.js'));
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/index.html'));
-});
-
+app.use('/api', bangiaoRoutes);
 app.use('/api', apiRoutes);
+app.use('/api', documentRoutes);
 
 app.listen(port, () => {
-  console.log(`Máy chủ đang chạy trên cổng ${port}`);
+  console.log(`Server is running on port ${port}`);
 });
