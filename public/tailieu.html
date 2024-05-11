@@ -137,7 +137,7 @@
 
     <div class="controls">
         <label for="categorySelect">Chọn danh mục:</label>
-        <select id="categorySelect" class="category-select">
+        <select id="categorySelect">
             <option value="Dẫn Phòng">Dẫn Phòng</option>
             <option value="Hide&Seek">Hide&Seek</option>
             <option value="The Morgue (GUM)">The Morgue (GUM)</option>
@@ -148,25 +148,23 @@
             <option value="Chiếc Hài Đỏ">Chiếc Hài Đỏ</option>
             <option value="Rồng Rắn Lên Mây">Rồng Rắn Lên Mây</option>
         </select>
-    </div>
-    <ul id="documentList"></ul>
-    <iframe id="documentViewer"></iframe>
-
-    <div class="upload-container">
         <button id="uploadButton">Tải lên tài liệu</button>
     </div>
+    <div class="document-container">
+        <ul class="document-list" id="documentList"></ul>
+    </div>
 
-    <div id="uploadModal" style="display:none;">
-        <div>
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>Tải lên tài liệu</h2>
             <form id="uploadForm" enctype="multipart/form-data">
-                <input type="file" id="documentFile" required>
+                <label for="documentFile">Chọn tài liệu:</label>
+                <input type="file" id="documentFile" name="file" required>
+                <input type="hidden" name="category" value="">
                 <button type="submit">Tải lên</button>
             </form>
         </div>
     </div>
-
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="tailieu.js"></script>
