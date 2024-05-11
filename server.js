@@ -4,8 +4,9 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 const apiRoutes = require('./src/routes/api.routes');
+const bangiaoRoutes = require('./src/routes/bangiao.routes');
 
-console.log('api.routes.js file imported successfully!');
+console.log('api.routes.js và bangiao.routes.js đã được nhập thành công!');
 
 const app = express();
 app.use(cors());
@@ -17,8 +18,8 @@ mongoose.connect('mongodb+srv://s3978535:RedPoint2905@cluster1.vqvlwni.mongodb.n
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('Failed to connect to MongoDB', err));
+.then(() => console.log('Đã kết nối với MongoDB'))
+.catch(err => console.error('Kết nối MongoDB thất bại', err));
 
 // Middleware
 app.use(bodyParser.json());
@@ -30,6 +31,13 @@ app.get('/script.js', (req, res) => {
   res.sendFile(path.join(__dirname, './public/script.js'));
 });
 
+app.use('/api', bangiaoRoutes);
+
+app.get('/bangiao.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(path.join(__dirname, './public/bangiao.js'));
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
 });
@@ -37,5 +45,5 @@ app.get('/', (req, res) => {
 app.use('/api', apiRoutes);
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server đang chạy trên cổng ${port}`);
 });

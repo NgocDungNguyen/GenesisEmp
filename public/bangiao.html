@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Bàn Giao Rooms Management</title>
+    
+    <style>
+        /* Basic styling for table and forms */
+        .room-select, .week-select, .day-select {
+            margin: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        .admin-only {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="lichlam.html" class="text-gray-800 text-xl font-bold mr-4">Genesis Employee</a>
+                    <ul class="flex items-center space-x-4">
+                        <li>
+                            <a href="index.html" class="text-gray-600 hover:text-gray-800 transition-colors">Đăng kí lịch làm</a>
+                        </li>
+                        <li>
+                            <a href="lichlam.html" class="text-gray-600 hover:text-gray-800 transition-colors">Lịch Làm</a>
+                        </li>
+                        <li>
+                            <a href="trade.html" class="text-gray-600 hover:text-gray-800 transition-colors">Trade Lịch Làm</a>
+                        </li>
+                        <li>
+                            <a href="bangiao.html" class="text-gray-600 hover:text-gray-800 transition-colors">Bàn Giao</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <h1>Quản Lý Bàn Giao Phòng</h1>
+    <div class="controls">
+        <label for="weekSelect">Chọn tuần:</label>
+        <select id="weekSelect" class="week-select"></select>
+
+        <label for="daySelect">Chọn ngày:</label>
+        <select id="daySelect" class="day-select">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+        </select>
+
+        <label for="roomSelect">Chọn phòng:</label>
+        <select id="roomSelect" class="room-select">
+            <option value="Hide&Seek">Hide&Seek</option>
+            <option value="The Morgue (GUM)">The Morgue (GUM)</option>
+            <option value="Gone">Gone</option>
+            <option value="The Illusion (AM)">The Illusion (AM)</option>
+            <option value="The Incantation (Ngải)">The Incantation (Ngải)</option>
+            <option value="The Red Bride (Hài Đỏ)">The Red Bride (Hài Đỏ)</option>
+            <option value="Rồng Rắn Lên Mây">Rồng Rắn Lên Mây</option>
+        </select>
+    </div>
+    <div id="adminInterface" class="admin-only">
+        <h2>Thêm Đồ Đạc và Thiết Bị</h2>
+        <form id="addFurnitureForm">
+            <label for="furnitureName">Tên đồ đạc:</label>
+            <input type="text" id="furnitureName" required>
+            <button type="submit">Thêm</button>
+        </form>
+    </div>
+    <h2>Trạng Thái Phòng</h2>
+    <table id="statusTable">
+        <thead>
+            <tr>
+                <th>Tên Đồ Đạc</th>
+                <th>Trạng Thái</th>
+                <th>Ghi Chú</th>
+                <th>Hoàn Thành</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dynamic content will be inserted here -->
+        </tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="bangiao.js"></script>
+</body>
+</html>
