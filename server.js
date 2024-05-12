@@ -5,11 +5,13 @@ const mongoose = require('mongoose');
 const path = require('path');
 const apiRoutes = require('./src/routes/api.routes');
 const bangiaoRoutes = require('./src/routes/bangiao.routes');
+const backupRoutes = require('./src/routes/backup.routes');
 
 console.log('api.routes.js and bangiao.routes.js file imported successfully!');
 
 const app = express();
 app.use(cors());
+
 
 const port = process.env.PORT || 3000;
 
@@ -41,6 +43,9 @@ app.get('/bangiao.js', (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
 });
+
+app.use('/api/backup', require('./src/routes/backup.routes')); // Đảm bảo đường dẫn này chính xác
+
 
 app.use('/api', apiRoutes);
 

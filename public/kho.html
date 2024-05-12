@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Kho Đồ Dự Phòng</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .btn {
+            background-color: #4f46e5;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #4338ca;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 0.375rem;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover, .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="lichlam.html" class="text-gray-800 text-xl font-bold mr-4">Genesis Employee</a>
+                    <ul class="flex items-center space-x-4">
+                        <li>
+                            <a href="index.html" class="text-gray-600 hover:text-gray-800 transition-colors">Đăng kí lịch làm</a>
+                        </li>
+                        <li>
+                            <a href="lichlam.html" class="text-gray-600 hover:text-gray-800 transition-colors">Lịch Làm</a>
+                        </li>
+                        <li>
+                            <a href="trade.html" class="text-gray-600 hover:text-gray-800 transition-colors">Trade Lịch Làm</a>
+                        </li>
+                        <li>
+                            <a href="bangiao.html" class="text-gray-600 hover:text-gray-800 transition-colors">Bàn Giao</a>
+                        </li>
+                        <li>
+                            <a href="kho.html" class="text-gray-600 hover:text-gray-800 transition-colors">Kho Dự Phòng</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+        <h1 class="text-center text-3xl font-bold my-6">Quản Lý Kho Đồ Dự Phòng</h1>
+
+        <div class="controls flex flex-wrap gap-4 mb-6">
+            <div>
+                <label for="weekSelect" class="block text-sm font-medium text-gray-700">Chọn tuần:</label>
+                <select id="weekSelect" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></select>
+            </div>
+
+            <div>
+                <label for="daySelect" class="block text-sm font-medium text-gray-700">Chọn ngày:</label>
+                <select id="daySelect" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="roomSelect" class="block text-sm font-medium text-gray-700">Chọn phòng:</label>
+                <select id="roomSelect" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option value="Hide&Seek">Hide&Seek</option>
+                    <option value="The Morgue (GUM)">The Morgue (GUM)</option>
+                    <option value="Gone">Gone</option>
+                    <option value="The Illusion (AM)">The Illusion (AM)</option>
+                    <option value="The Incantation (Ngải)">The Incantation (Ngải)</option>
+                    <option value="The Red Bride (Hài Đỏ)">The Red Bride (Hài Đỏ)</option>
+                    <option value="Rồng Rắn Lên Mây">Rồng Rắn Lên Mây</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+            <h2 class="text-lg leading-6 font-medium text-gray-900">Thêm Đồ Dự Phòng</h2>
+            <form id="addBackupForm" class="mt-5 grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-x-8">
+                <div>
+                    <label for="itemName" class="block text-sm font-medium text-gray-700">Tên đồ:</label>
+                    <input type="text" id="itemName" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="quantity" class="block text-sm font-medium text-gray-700">Số lượng:</label>
+                    <input type="number" id="quantity" required min="0" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div>
+                    <label for="note" class="block text-sm font-medium text-gray-700">Ghi chú:</label>
+                    <input type="text" id="note" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+                <div class="sm:col-span-3">
+                    <button type="submit" class="btn w-full sm:w-auto">Thêm</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-lg leading-6 font-medium text-gray-900">Kho Dự Phòng</h2>
+            <table id="backupTable" class="min-w-full divide-y divide-gray-200 mt-4">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tên Đồ</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Số Lượng</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ghi Chú</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lịch Sử</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <!-- Dynamic content will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Lịch Sử</h2>
+            <pre id="historyContent"></pre>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="kho.js"></script>
+</body>
+</html>
