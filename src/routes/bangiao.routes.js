@@ -74,19 +74,4 @@ router.patch('/rooms/:id/priority', async (req, res) => {
     }
 });
 
-// Update order of items
-router.post('/rooms/updateOrder', async (req, res) => {
-    try {
-        const { order } = req.body;
-        for (const item of order) {
-            await Furniture.findByIdAndUpdate(item._id, { order: item.order });
-        }
-        res.status(200).json({ message: 'Cập nhật thứ tự thành công' });
-    } catch (error) {
-        console.error('Lỗi khi cập nhật thứ tự:', error);
-        res.status(500).json({ message: 'Lỗi khi cập nhật thứ tự', error: error.message });
-    }
-});
-
-
 module.exports = router;

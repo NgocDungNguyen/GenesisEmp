@@ -9,8 +9,7 @@ const FurnitureSchema = new Schema({
     status: { type: String, default: 'Tốt' },
     note: { type: String, default: '' },
     completed: { type: Boolean, default: false },
-    priority: { type: Boolean, default: false },
-    order: { type: Number, default: 0 }  // Add order field
+    priority: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('Furniture', FurnitureSchema);

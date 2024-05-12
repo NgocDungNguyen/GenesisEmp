@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bàn Giao Phòng</title>
+    <title>Bàn Giao Rooms Management</title>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         /* Custom styling for UI elements */
-        .room-select, .week-select, .day-select,  .sort-select {
+        .room-select, .week-select, .day-select {
             margin: 10px 0;
             padding: 8px;
             border-radius: 0.375rem; /* 6px */
@@ -53,11 +53,6 @@
         .button{
             padding: auto;
         }
-        .sort-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -79,12 +74,6 @@
                         <li>
                             <a href="bangiao.html" class="text-gray-600 hover:text-gray-800 transition-colors">Bàn Giao</a>
                         </li>
-                        <li>
-                            <a href="tailieu.html" class="text-gray-600 hover:text-gray-800 transition-colors">Tài Liệu</a>
-                        </li>
-                        <li>
-                            <a href="nhanvien.html" class="text-gray-600 hover:text-gray-800 transition-colors">Nhân Viên</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -97,18 +86,18 @@
         <div class="controls">
             <label for="weekSelect">Chọn tuần:</label>
             <select id="weekSelect" class="week-select"></select>
-    
+
             <label for="daySelect">Chọn ngày:</label>
             <select id="daySelect" class="day-select">
-                <option value="Monday">Thứ 2</option>
-                <option value="Tuesday">Thứ 3</option>
-                <option value="Wednesday">Thứ 4</option>
-                <option value="Thursday">Thứ 5</option>
-                <option value="Friday">Thứ 6</option>
-                <option value="Saturday">Thứ 7</option>
-                <option value="Sunday">Chủ Nhật</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
             </select>
-    
+
             <label for="roomSelect">Chọn phòng:</label>
             <select id="roomSelect" class="room-select">
                 <option value="Hide&Seek">Hide&Seek</option>
@@ -119,31 +108,23 @@
                 <option value="The Red Bride (Hài Đỏ)">The Red Bride (Hài Đỏ)</option>
                 <option value="Rồng Rắn Lên Mây">Rồng Rắn Lên Mây</option>
             </select>
+
+            <label for="sortSelect">Sắp xếp theo:</label>
+            <select id="sortSelect" class="sort-select">
+                <option value="furnitureName">Tên A-Z</option>
+                <option value="condition">Trạng thái</option>
+                <option value="complete">Hoàn thành</option>
+            </select>
         </div>
-    
         <div id="adminInterface" class="admin-only">
             <h2>Thêm Đồ Đạc và Thiết Bị</h2>
             <form id="addFurnitureForm">
                 <label for="furnitureName">Tên đồ đạc:</label>
                 <input type="text" id="furnitureName" required>
-                <button type="submit">Thêm</button>
+                <button type="submit" class="btn">Thêm</button>
             </form>
         </div>
-    
-        <div class="sort-container">
-            <h2>Trạng Thái Phòng</h2>
-            <div>
-                <label for="sortSelect">Sắp xếp:</label>
-                <select id="sortSelect" class="sort-select">
-                    <option value="">--Chọn--</option>
-                    <option value="furnitureName">Tên A-Z</option>
-                    <option value="furnitureNameDesc">Tên Z-A</option>
-                    <option value="condition">Trạng Thái</option>
-                    <option value="complete">Hoàn Thành</option>
-                </select>
-            </div>
-        </div>
-    
+        <h2>Trạng Thái Phòng</h2>
         <table id="statusTable">
             <thead>
                 <tr>
@@ -151,17 +132,16 @@
                     <th>Trạng Thái</th>
                     <th>Ghi Chú</th>
                     <th>Hoàn Thành</th>
-                    <th>Hành Động</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- Dynamic content will be inserted here -->
             </tbody>
         </table>
-    
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-        <script src="bangiao.js"></script>
-        <script src="script.js"> </script>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="bangiao.js"></script>
 </body>
 </html>
