@@ -1,17 +1,13 @@
 $(document).ready(function() {
-    // Fetch and render employee data on page load
     fetchNhanvienData();
 
-    // Add employee form submission
     $('#nhanvienForm').submit(function(event) {
         event.preventDefault();
         addNhanvien();
     });
 
-    // Function to add a new employee row
     function addNhanvien() {
         const nhanvienName = $('#nhanvienName').val().trim();
-        const nhanvienDesk = $('#nhanvienDesk').is(':checked') ? 'Yes' : 'No';
 
         if (nhanvienName === "") {
             alert("Tên Nhân Viên không được để trống.");
@@ -21,7 +17,7 @@ $(document).ready(function() {
         const newRow = `
             <tr>
                 <td>${nhanvienName}</td>
-                <td><input type="checkbox" ${nhanvienDesk === 'Yes' ? 'checked' : ''}></td>
+                <td><input type="checkbox"></td>
                 <td>${generateOptions('gone')}</td>
                 <td>${generateOptions('gum')}</td>
                 <td>${generateOptions('hns')}</td>
@@ -37,11 +33,9 @@ $(document).ready(function() {
 
         $('#nhanvienTable tbody').append(newRow);
         $('#nhanvienName').val('');
-        $('#nhanvienDesk').prop('checked', false);
         saveNhanvienData();
     }
 
-    // Function to generate role options
     function generateOptions(role) {
         return `
             <label><input type="checkbox" name="${role}-flow"> Flow</label><br>
@@ -50,7 +44,6 @@ $(document).ready(function() {
         `;
     }
 
-    // Function to generate registration options
     function generateRegistrationOptions() {
         return `
             <label><input type="radio" name="registration" value="Đã đki làm"> Đã đki làm</label><br>
@@ -58,24 +51,20 @@ $(document).ready(function() {
         `;
     }
 
-    // Event delegation for delete button
     $('#nhanvienTable').on('click', '.delete-btn', function() {
         $(this).closest('tr').remove();
         saveNhanvienData();
     });
 
-    // Event delegation for checkbox and radio change
     $('#nhanvienTable').on('change', 'input', function() {
         saveNhanvienData();
     });
 
-    // Function to fetch employee data
     function fetchNhanvienData() {
         $.ajax({
             url: '/api/nhanvien',
             method: 'GET',
             success: function(data) {
-                console.log('Fetched employee data:', data);
                 renderNhanvienTable(data);
             },
             error: function(error) {
@@ -84,7 +73,6 @@ $(document).ready(function() {
         });
     }
 
-    // Function to render the employee table
     function renderNhanvienTable(data) {
         const $tableBody = $('#nhanvienTable tbody');
         $tableBody.empty();
@@ -126,11 +114,11 @@ $(document).ready(function() {
     }
 
     function getRoleStatus($td) {
-        return {
-            flow: $td.find('input[name$="-flow"]').is(':checked'),
-            dien: $td.find('input[name$="-dien"]').is(':checked'),
-            dj: $td.find('input[name$="-dj"]').is(':checked')
-        };
+        return [
+            $td.find('input[name$="-flow"]').is(':checked') ? 'flow' : '',
+            $td.find('input[name$="-dien"]').is(':checked') ? 'dien' : '',
+            $td.find('input[name$="-dj"]').is(':checked') ? 'dj' : ''
+        ].filter(Boolean);
     }
 
     function saveNhanvienData() {
@@ -154,8 +142,6 @@ $(document).ready(function() {
             };
             nhanvienData.push(nhanvien);
         });
-
-        console.log('Saving employee data:', nhanvienData);
 
         $.ajax({
             url: '/api/nhanvien',
