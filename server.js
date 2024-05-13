@@ -7,9 +7,9 @@ const apiRoutes = require('./src/routes/api.routes');
 const bangiaoRoutes = require('./src/routes/bangiao.routes');
 const backupRoutes = require('./src/routes/backup.routes');
 const documentRoutes = require('./src/routes/document.routes');
+const nhanvienRoutes = require('./src/routes/nhanvien.routes');
 
-
-console.log('api.routes.js, bangiao.routes.js, and document.routes.js files imported successfully!');
+console.log('All routes files imported successfully!');
 
 const app = express();
 app.use(cors());
@@ -32,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
+// Static file routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
 });
@@ -41,7 +42,7 @@ app.get('/script.js', (req, res) => {
   res.sendFile(path.join(__dirname, './public/script.js'));
 });
 
-app.get('/bangiao.js', (req, res) => {
+app.get('./bangiao.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.sendFile(path.join(__dirname, './public/bangiao.js'));
 });
@@ -51,11 +52,17 @@ app.get('/tailieu.js', (req, res) => {
   res.sendFile(path.join(__dirname, './public/tailieu.js'));
 });
 
-app.use('/api/backup', require('./src/routes/backup.routes')); 
+app.get('/nhanvien.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(path.join(__dirname, './public/nhanvien.js'));
+});
 
+// Use routes
+app.use('/api/backup', backupRoutes);
 app.use('/api', apiRoutes);
 app.use('/api', bangiaoRoutes);
 app.use('/api', documentRoutes);
+app.use('/api/nhanvien', nhanvienRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
