@@ -102,7 +102,7 @@ $(document).ready(function() {
         return `
             <label><input type="checkbox" name="${role}-flow" ${data.includes('flow') ? 'checked' : ''}> Flow</label><br>
             <label><input type="checkbox" name="${role}-dien" ${data.includes('dien') ? 'checked' : ''}> Diễn</label><br>
-            <label><input type="checkbox" name="${role}-dj" ${data.includes('dj') ? 'checked' : ''}> DJ</label>
+            <label><input type="checkbox" name="${role}-DJ" ${data.includes('DJ') ? 'checked' : ''}> DJ</label>
         `;
     }
 
