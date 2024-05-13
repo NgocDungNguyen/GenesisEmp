@@ -26,7 +26,7 @@ $(document).ready(function() {
                 <td>${generateOptions('ngai2')}</td>
                 <td>${generateOptions('chd')}</td>
                 <td>${generateOptions('rrlm')}</td>
-                <td>${generateRegistrationOptions()}</td>
+                <td>${generateRegistrationOptions(nhanvienName)}</td>
                 <td><button class="btn delete-btn">Xóa</button></td>
             </tr>
         `;
@@ -44,10 +44,10 @@ $(document).ready(function() {
         `;
     }
 
-    function generateRegistrationOptions() {
+    function generateRegistrationOptions(name) {
         return `
-            <label><input type="radio" name="registration" value="Đã đki làm"> Đã đki làm</label><br>
-            <label><input type="radio" name="registration" value="Chưa đki làm"> Chưa đki làm</label>
+            <label><input type="radio" name="${name}-registration" value="Đã đki làm"> Đã đki làm</label><br>
+            <label><input type="radio" name="${name}-registration" value="Chưa đki làm"> Chưa đki làm</label>
         `;
     }
 
@@ -90,7 +90,7 @@ $(document).ready(function() {
                     <td>${generateOptionsWithData('ngai2', nhanvien.roles.ngai2)}</td>
                     <td>${generateOptionsWithData('chd', nhanvien.roles.chd)}</td>
                     <td>${generateOptionsWithData('rrlm', nhanvien.roles.rrlm)}</td>
-                    <td>${generateRegistrationOptionsWithData(nhanvien.registration)}</td>
+                    <td>${generateRegistrationOptionsWithData(nhanvien.name, nhanvien.registration)}</td>
                     <td><button class="btn delete-btn">Xóa</button></td>
                 </tr>
             `;
@@ -102,14 +102,14 @@ $(document).ready(function() {
         return `
             <label><input type="checkbox" name="${role}-flow" ${data.includes('flow') ? 'checked' : ''}> Flow</label><br>
             <label><input type="checkbox" name="${role}-dien" ${data.includes('dien') ? 'checked' : ''}> Diễn</label><br>
-            <label><input type="checkbox" name="${role}-DJ" ${data.includes('DJ') ? 'checked' : ''}> DJ</label>
+            <label><input type="checkbox" name="${role}-dj" ${data.includes('dj') ? 'checked' : ''}> DJ</label>
         `;
     }
 
-    function generateRegistrationOptionsWithData(registration) {
+    function generateRegistrationOptionsWithData(name, registration) {
         return `
-            <label><input type="radio" name="registration" value="Đã đki làm" ${registration === 'Đã đki làm' ? 'checked' : ''}> Đã đki làm</label><br>
-            <label><input type="radio" name="registration" value="Chưa đki làm" ${registration === 'Chưa đki làm' ? 'checked' : ''}> Chưa đki làm</label>
+            <label><input type="radio" name="${name}-registration" value="Đã đki làm" ${registration === 'Đã đki làm' ? 'checked' : ''}> Đã đki làm</label><br>
+            <label><input type="radio" name="${name}-registration" value="Chưa đki làm" ${registration === 'Chưa đki làm' ? 'checked' : ''}> Chưa đki làm</label>
         `;
     }
 
@@ -138,7 +138,7 @@ $(document).ready(function() {
                     chd: getRoleStatus($row.find('td:eq(8)')),
                     rrlm: getRoleStatus($row.find('td:eq(9)'))
                 },
-                registration: $row.find('td:eq(10) input:checked').val()
+                registration: $row.find(`td:eq(10) input[name="${$row.find('td:eq(0)').text()}-registration"]:checked`).val()
             };
             nhanvienData.push(nhanvien);
         });
