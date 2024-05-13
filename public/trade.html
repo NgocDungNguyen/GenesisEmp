@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Shifts</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="navbar.css">
+
+    <style>
+        .table-container {
+            margin: 20px auto;
+            max-width: 1200px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f3f4f6;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+        .btn {
+            background-color: #4f46e5;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #4338ca;
+        }
+        .form-container {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+        }
+        .checkbox-group label {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .table-controls {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+        .delete-btn {
+            background-color: #e3342f;
+        }
+        .delete-btn:hover {
+            background-color: #cc1f1a;
+        }
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        .notification-icon .notification-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-6 py-3 relative">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <button class="hamburger text-3xl focus:outline-none focus:ring-2 focus:ring-gray-600" onclick="toggleMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a href="lichlam.html" class="text-gray-800 text-xl font-bold mr-4 hidden lg:block">Genesis Employee</a>
+                </div>
+                <ul class="menu flex items-center space-x-4 lg:space-x-4 lg:flex">
+                    <li>
+                        <a href="index.html" class="text-gray-600 hover:text-gray-800 transition-colors">Đăng kí lịch làm</a>
+                    </li>
+                    <li>
+                        <a href="lichlam.html" class="text-gray-600 hover:text-gray-800 transition-colors">Lịch Làm</a>
+                    </li>
+                    <li>
+                        <a href="trade.html" class="text-gray-600 hover:text-gray-800 transition-colors">Trade Lịch Làm</a>
+                    </li>
+                    <li>
+                        <a href="bangiao.html" class="text-gray-600 hover:text-gray-800 transition-colors">Bàn Giao</a>
+                    </li>
+                    <li>
+                        <a href="kho.html" class="text-gray-600 hover:text-gray-800 transition-colors">Kho BackUp</a>
+                    </li>
+                    <li>
+                        <a href="tailieu.html" class="text-gray-600 hover:text-gray-800 transition-colors">Tài Liệu</a>
+                    </li>
+                    <li>
+                        <a href="nhanvien.html" class="text-gray-600 hover:text-gray-800 transition-colors">Nhân Viên</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="notification-icon hidden lg:block">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+        <h1 class="text-center text-3xl font-bold my-6">Trade Shifts</h1>
+
+        <div class="form-container">
+            <form id="banCaForm">
+                <h2 class="text-2xl font-bold mb-4">Bán Ca</h2>
+                <div class="form-group">
+                    <label for="banCaName">Tên Nhân Viên</label>
+                    <input type="text" id="banCaName" required>
+                </div>
+                <div class="form-group">
+                    <label for="banCaShift">Ca Làm</label>
+                    <select id="banCaShift" required>
+                        <option value="Morning">Sáng</option>
+                        <option value="Afternoon">Chiều</option>
+                        <option value="Evening">Tối</option>
+                        <option value="Night">Đêm</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="banCaNote">Ghi Chú</label>
+                    <input type="text" id="banCaNote">
+                </div>
+                <button type="submit" class="btn">Tạo Yêu Cầu Bán Ca</button>
+            </form>
+        </div>
+
+        <div class="form-container">
+            <form id="muaCaForm">
+                <h2 class="text-2xl font-bold mb-4">Mua Ca</h2>
+                <div class="form-group">
+                    <label for="muaCaName">Tên Nhân Viên</label>
+                    <input type="text" id="muaCaName" required>
+                </div>
+                <div class="form-group">
+                    <label for="muaCaShift">Ca Làm Mong Muốn</label>
+                    <select id="muaCaShift" required>
+                        <option value="Morning">Sáng</option>
+                        <option value="Afternoon">Chiều</option>
+                        <option value="Evening">Tối</option>
+                        <option value="Night">Đêm</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="muaCaNote">Ghi Chú</label>
+                    <input type="text" id="muaCaNote">
+                </div>
+                <button type="submit" class="btn">Tạo Yêu Cầu Mua Ca</button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <h2 class="text-2xl font-bold mb-4">Yêu Cầu Chờ Duyệt</h2>
+            <table id="tradeRequestsTable">
+                <thead>
+                    <tr>
+                        <th>Tên Nhân Viên</th>
+                        <th>Loại Yêu Cầu</th>
+                        <th>Ca Làm</th>
+                        <th>Ghi Chú</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamic content will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="navbar.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="trade.js"></script>
+</body>
+</html>
