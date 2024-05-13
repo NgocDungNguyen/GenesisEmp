@@ -55,11 +55,13 @@ app.get('/trade.js', (req, res) => {
   res.sendFile(path.join(__dirname, './public/trade.js'));
 });
 
+
+
 app.use('/api/backup', require('./src/routes/backup.routes')); 
 app.use('/api', apiRoutes);
 app.use('/api', bangiaoRoutes);
 app.use('/api', documentRoutes);
-app.use('/api', nhanvienRoutes);
+app.use('/api/nhanvien', nhanvienRoutes);
 app.use('/api/trades', tradeRoutes);
 
 app.listen(port, () => {

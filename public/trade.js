@@ -1,6 +1,11 @@
 $(document).ready(function() {
-    let isAdmin = false; // Update this variable based on the logged-in user's role
     let notificationCount = 0;
+    let isAdmin = true;
+
+    // Notification modal elements
+    const $notificationModal = $('#notificationModal');
+    const $notificationList = $('#notificationList');
+    const $notificationCount = $('.notification-count');
 
     $('#banCaForm').submit(function(event) {
         event.preventDefault();
@@ -10,6 +15,15 @@ $(document).ready(function() {
     $('#muaCaForm').submit(function(event) {
         event.preventDefault();
         createTradeRequest('muaCa');
+    });
+
+    $('.notification-icon').click(function() {
+        $notificationModal.show();
+        resetNotificationCount();
+    });
+
+    $('.close').click(function() {
+        $notificationModal.hide();
     });
 
     function createTradeRequest(type) {
@@ -32,7 +46,7 @@ $(document).ready(function() {
             success: function(data) {
                 alert('Yêu cầu đã được tạo thành công!');
                 fetchTradeRequests();
-                increaseNotificationCount();
+                addNotification(`Yêu cầu ${requestData.type} của ${requestData.name} đã được tạo.`);
             },
             error: function(error) {
                 console.error('Lỗi khi tạo yêu cầu:', error);
@@ -66,13 +80,16 @@ $(document).ready(function() {
 
             const $actionsCell = $('<td>');
             if (isAdmin) {
-                const $approveButton = $('<button>').text('Duyệt').addClass('btn').click(function() {
+                const $approveButton = $('<button>').text('Chấp Thuận').addClass('btn').click(function() {
                     approveTradeRequest(request._id);
                 });
-                const $rejectButton = $('<button>').text('Hủy').addClass('btn delete-btn').click(function() {
+                const $rejectButton = $('<button>').text('Từ Chối').addClass('btn delete-btn').click(function() {
                     rejectTradeRequest(request._id);
                 });
-                $actionsCell.append($approveButton).append($rejectButton);
+                const $removeButton = $('<button>').text('Xóa').addClass('btn delete-btn').click(function() {
+                    removeTradeRequest(request._id);
+                });
+                $actionsCell.append($approveButton).append($rejectButton).append($removeButton);
             }
             $row.append($actionsCell);
             $tableBody.append($row);
@@ -84,34 +101,56 @@ $(document).ready(function() {
             url: `/api/trades/${requestId}/approve`,
             method: 'PUT',
             success: function(data) {
-                alert('Yêu cầu đã được duyệt thành công!');
+                alert('Yêu cầu đã được chấp thuận!');
                 fetchTradeRequests();
-                increaseNotificationCount();
+                addNotification(`Yêu cầu ${data.trade.type} của ${data.trade.name} đã được chấp thuận.`);
             },
             error: function(error) {
-                console.error('Lỗi khi duyệt yêu cầu:', error);
+                console.error('Lỗi khi chấp thuận yêu cầu:', error);
             }
         });
     }
 
     function rejectTradeRequest(requestId) {
         $.ajax({
-            url: `/api/trades/${requestId}`,
-            method: 'DELETE',
+            url: `/api/trades/${requestId}/reject`,
+            method: 'PUT',
             success: function(data) {
-                alert('Yêu cầu đã bị hủy!');
+                alert('Yêu cầu đã bị từ chối!');
                 fetchTradeRequests();
-                increaseNotificationCount();
+                addNotification(`Yêu cầu ${data.trade.type} của ${data.trade.name} đã bị từ chối.`);
             },
             error: function(error) {
-                console.error('Lỗi khi hủy yêu cầu:', error);
+                console.error('Lỗi khi từ chối yêu cầu:', error);
             }
         });
     }
 
-    function increaseNotificationCount() {
+    function removeTradeRequest(requestId) {
+        $.ajax({
+            url: `/api/trades/${requestId}`,
+            method: 'DELETE',
+            success: function(data) {
+                alert('Yêu cầu đã bị xóa!');
+                fetchTradeRequests();
+                addNotification(`Yêu cầu của ${data.trade.name} đã bị xóa.`);
+            },
+            error: function(error) {
+                console.error('Lỗi khi xóa yêu cầu:', error);
+            }
+        });
+    }
+
+    function addNotification(message) {
         notificationCount++;
-        $('.notification-count').text(notificationCount);
+        $notificationCount.text(notificationCount);
+        const $notificationItem = $('<li>').text(message);
+        $notificationList.append($notificationItem);
+    }
+
+    function resetNotificationCount() {
+        notificationCount = 0;
+        $notificationCount.text(notificationCount);
     }
 
     // Initial fetch of trade requests

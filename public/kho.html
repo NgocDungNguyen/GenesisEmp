@@ -60,15 +60,13 @@
 </head>
 <body class="bg-gray-100">
     <nav class="bg-white shadow-md">
-        <div class="container mx-auto px-6 py-3 relative">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center">
-                    <button class="hamburger text-3xl focus:outline-none focus:ring-2 focus:ring-gray-600" onclick="toggleMenu()">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <a href="lichlam.html" class="text-gray-800 text-xl font-bold mr-4 hidden lg:block">Genesis Employee</a>
-                </div>
-                <ul class="menu flex items-center space-x-4 lg:space-x-4 lg:flex">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <button class="hamburger text-3xl focus:outline-none focus:ring-2 focus:ring-gray-600 lg:hidden" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="lichlam.html" class="text-gray-800 text-xl font-bold">Genesis Employee</a>
+                <ul class="menu flex items-center space-x-4 lg:flex">
                     <li>
                         <a href="index.html" class="text-gray-600 hover:text-gray-800 transition-colors">Đăng kí lịch làm</a>
                     </li>
@@ -92,13 +90,12 @@
                     </li>
                 </ul>
             </div>
-            <div class="notification-icon hidden lg:block">
+            <div class="notification-icon lg:block">
                 <i class="fas fa-bell"></i>
                 <span class="notification-count">0</span>
             </div>
         </div>
     </nav>
-
 
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
         <h1 class="text-center text-3xl font-bold my-6">Quản Lý Kho Đồ Dự Phòng</h1>
@@ -183,14 +180,6 @@
             <pre id="historyContent"></pre>
         </div>
     </div>
-
-    <script>
-        function toggleMenu() {
-            const menu = document.querySelector('.menu');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
-    </script>
-
 
     <script src="navbar.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
