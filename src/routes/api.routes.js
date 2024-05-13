@@ -168,37 +168,26 @@ router.post('/employees/:id/shifts', async (req, res) => {
     }
 });
 
-// Remove a shift from an employee
-router.delete('/employees/:id/shifts/:shiftId', async (req, res) => {
+// Delete a shift
+router.delete('/employees/:employeeId/shifts/:shiftId', async (req, res) => {
     try {
-        const { id, shiftId } = req.params;
+        const { employeeId, shiftId } = req.params;
+        const employee = await Employee.findById(employeeId);
 
-        const employee = await Employee.findById(id);
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
 
-        const shiftToRemove = employee.shifts.id(shiftId);
-        if (!shiftToRemove) {
+        const shiftIndex = employee.shifts.findIndex(shift => shift._id.toString() === shiftId);
+        if (shiftIndex === -1) {
             return res.status(404).json({ message: 'Shift not found in employee record' });
         }
 
-        shiftToRemove.remove();
+        employee.shifts.splice(shiftIndex, 1);
         await employee.save();
-
-        const week = getWeekNumber();
-        const schedule = await Schedule.findOne({ employee: id, week });
-        if (schedule) {
-            const shiftInSchedule = schedule.shifts.id(shiftId);
-            if (shiftInSchedule) {
-                shiftInSchedule.remove();
-                await schedule.save();
-            }
-        }
 
         res.json({ message: 'Shift removed successfully' });
     } catch (error) {
-        console.error('Error removing shift:', error);
         res.status(500).json({ message: 'Error removing shift', error: error.message });
     }
 });

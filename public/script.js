@@ -268,62 +268,62 @@ $(document).ready(function() {
     }
 
     // Add shift function
-function addShift(employeeId, day) {
-    const newShift = prompt("Enter new shift (Morning, Afternoon, Evening, Night):");
-    if (newShift) {
+    function addShift(employeeId, day) {
+        const newShift = prompt("Enter new shift (Morning, Afternoon, Evening, Night):");
+        if (newShift) {
+            $.ajax({
+                url: `/api/employees/${employeeId}/shifts`,
+                method: 'POST',
+                data: JSON.stringify({ day, shift: newShift, note: "" }),
+                contentType: 'application/json',
+                success: function(data) {
+                    alert('Ca làm mới được thêm thành công');
+                    fetchScheduleData(selectedWeek);
+                },
+                error: function(error) {
+                    console.error('Lỗi khi thêm ca làm:', error);
+                }
+            });
+        }
+    }
+
+    // Remove shift function
+    function removeShift(employeeId, shiftId) {
         $.ajax({
-            url: `/api/employees/${employeeId}/shifts`,
-            method: 'POST',
-            data: JSON.stringify({ day, shift: newShift, note: "" }),
-            contentType: 'application/json',
+            url: `/api/employees/${employeeId}/shifts/${shiftId}`,
+            method: 'DELETE',
             success: function(data) {
-                alert('Ca làm mới được thêm thành công');
+                alert('Ca làm đã được xóa thành công');
                 fetchScheduleData(selectedWeek);
             },
             error: function(error) {
-                console.error('Lỗi khi thêm ca làm:', error);
+                console.error('Lỗi khi xóa ca làm:', error);
             }
         });
     }
-}
 
-// Remove shift function
-function removeShift(employeeId, shiftId) {
-    $.ajax({
-        url: `/api/employees/${employeeId}/shifts/${shiftId}`,
-        method: 'DELETE',
-        success: function(data) {
-            alert('Ca làm đã được xóa thành công');
-            fetchScheduleData(selectedWeek);
-        },
-        error: function(error) {
-            console.error('Lỗi khi xóa ca làm:', error);
+    // Update schedules function
+    $('#saveButton').click(function() {
+        if (isAdminLoggedIn) {
+            const updatedSchedules = getUpdatedSchedules();
+
+            $.ajax({
+                url: '/api/schedules/' + selectedWeek,
+                method: 'PUT',
+                data: JSON.stringify(updatedSchedules),
+                contentType: 'application/json',
+                success: function(data) {
+                    alert('Cập nhật thành công');
+                    fetchScheduleData(selectedWeek);
+                },
+                error: function(error) {
+                    console.error('Lỗi khi cập nhật ca làm:', error);
+                }
+            });
+        } else {
+            alert('Bạn cần đăng nhập để thực hiện thay đổi');
         }
     });
-}
-
-// Update schedules function
-$('#saveButton').click(function() {
-    if (isAdminLoggedIn) {
-        const updatedSchedules = getUpdatedSchedules();
-
-        $.ajax({
-            url: '/api/schedules/' + selectedWeek,
-            method: 'PUT',
-            data: JSON.stringify(updatedSchedules),
-            contentType: 'application/json',
-            success: function(data) {
-                alert('Cập nhật thành công');
-                fetchScheduleData(selectedWeek);
-            },
-            error: function(error) {
-                console.error('Lỗi khi cập nhật ca làm:', error);
-            }
-        });
-    } else {
-        alert('Bạn cần đăng nhập để thực hiện thay đổi');
-    }
-});
 
     $('#weekSelect').change(function() {
         const weekNumber = $(this).val();
