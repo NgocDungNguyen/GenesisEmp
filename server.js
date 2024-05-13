@@ -6,8 +6,10 @@ const path = require('path');
 const apiRoutes = require('./src/routes/api.routes');
 const bangiaoRoutes = require('./src/routes/bangiao.routes');
 const backupRoutes = require('./src/routes/backup.routes');
+const documentRoutes = require('./src/routes/document.routes');
 
-console.log('api.routes.js and bangiao.routes.js file imported successfully!');
+
+console.log('api.routes.js, bangiao.routes.js, and document.routes.js files imported successfully!');
 
 const app = express();
 app.use(cors());
@@ -27,27 +29,33 @@ mongoose.connect('mongodb+srv://s3978535:RedPoint2905@cluster1.vqvlwni.mongodb.n
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
 
 app.get('/script.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.sendFile(path.join(__dirname, './public/script.js'));
 });
 
-app.use('/api', bangiaoRoutes);
-
 app.get('/bangiao.js', (req, res) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.sendFile(path.join(__dirname, './public/bangiao.js'));
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/index.html'));
+app.get('/tailieu.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(path.join(__dirname, './public/tailieu.js'));
 });
 
-app.use('/api/backup', require('./src/routes/backup.routes')); // Đảm bảo đường dẫn này chính xác
-
+app.use('/api/backup', require('./src/routes/backup.routes')); 
 
 app.use('/api', apiRoutes);
+app.use('/api', bangiaoRoutes);
+app.use('/api', documentRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

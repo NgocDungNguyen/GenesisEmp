@@ -59,17 +59,31 @@ $(document).ready(function() {
         if (documents.length > 0) {
             documents.forEach(function(doc) {
                 const $item = $('<li>')
-                    .append(`<a href="#" data-url="${doc.url}" class="view-link">${doc.name}</a>`);
+                    .append(`<a href="${doc.url}" target="_blank" class="view-link">${doc.name}</a>`)
+                    .append(`<button class="delete-button" data-id="${doc._id}">Xóa</button>`);
                 $documentList.append($item);
             });
         } else {
             $documentList.append('<li>Không có tài liệu nào trong danh mục này.</li>');
         }
 
-        $('.view-link').click(function(event) {
-            event.preventDefault();
-            const url = $(this).data('url');
-            documentViewer.attr('src', url).show();
+        $('.delete-button').click(function() {
+            const docId = $(this).data('id');
+            deleteDocument(docId);
+        });
+    }
+
+    function deleteDocument(id) {
+        $.ajax({
+            url: `/api/documents/${id}`,
+            method: 'DELETE',
+            success: function(response) {
+                alert('Tài liệu đã được xóa thành công');
+                fetchDocuments($('#categorySelect').val());
+            },
+            error: function(error) {
+                console.error('Lỗi khi xóa tài liệu:', error);
+            }
         });
     }
 

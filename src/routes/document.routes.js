@@ -10,7 +10,8 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
+        const safeFilename = file.originalname.replace(/[^\w.]+/g, '_');
+        cb(null, Date.now() + '-' + safeFilename);
     }
 });
 const upload = multer({ storage: storage });
@@ -44,6 +45,22 @@ router.get('/documents/:category', async (req, res) => {
     } catch (error) {
         console.error('Lỗi khi lấy tài liệu:', error);
         res.status(500).json({ message: 'Lỗi khi lấy tài liệu', error: error.message });
+    }
+});
+
+// Route to delete a document
+router.delete('/documents/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const document = await Document.findByIdAndDelete(id);
+        if (document) {
+            res.status(200).json({ message: 'Tài liệu đã được xóa thành công' });
+        } else {
+            res.status(404).json({ message: 'Tài liệu không tồn tại' });
+        }
+    } catch (error) {
+        console.error('Lỗi khi xóa tài liệu:', error);
+        res.status(500).json({ message: 'Lỗi khi xóa tài liệu', error: error.message });
     }
 });
 
